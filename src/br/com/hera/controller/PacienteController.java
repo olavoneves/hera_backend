@@ -10,6 +10,7 @@ import br.com.hera.model.dto.Telefone;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class PacienteController {
 
@@ -106,8 +107,38 @@ public class PacienteController {
         String resposta;
         Connection connection = ConnectionFactory.abrirConexao();
 
+        PacienteDAO pacienteDAO = new PacienteDAO(connection);
+        ArrayList<Object> pacientes = pacienteDAO.listarTodos();
 
+        resposta = "Lista de Pacientes:\n";
+        if (pacientes.isEmpty()) {
+            return "Nenhum paciente cadastrado.\n";
+        } else {
+            for (Object object : pacientes) {
+                Paciente paciente = (Paciente) object;
+                resposta += "Id: " + paciente.getId()
+                        + ", Nome: " + paciente.getNome()
+                        + ", E-mail: " + paciente.getEmail()
+                        + ", Sexo: " + paciente.getSexo()
+                        + ", Telefone: " + paciente.getTelefone()
+                        + ", Status: " + paciente.getStatus()
+                        + ", Consultas Restantes: " + paciente.getConsultasRestantes()
+                        + ", Faltas: " + paciente.getFaltas()
+                        + ", Possui Deficiência: " + paciente.isPossuiDeficiencia()
+                        + ", Tipo de Deficiência: " + paciente.getTipoDeficiencia()
+                        + ", Vídeo Enviado: " + paciente.isVideoEnviado()
+                        + ", Data Nascimento: " + paciente.getDataNascimento()
+                        + ", Endereço: " + paciente.getEndereco()
+                        + ", Preferência de Contato: " + paciente.getPreferenciaContato()
+                        + ", Data de Cadastro: " + paciente.getDataCadastro()
+                        + ", Ultima Atualização: " + paciente.getUltimaAtualizacao()
+                        + ", Acompanhante: " + paciente.getAcompanhante()
+                        + ", Administrador: " + paciente.getAdministrador()
+                        + "\n";
+            }
+        }
 
         ConnectionFactory.fecharConexao(connection);
+        return resposta;
     }
 }
