@@ -21,7 +21,6 @@ public class Paciente {
     private LocalDateTime dataCadastro;
     private LocalDateTime ultimaAtualizacao;
     private Acompanhante acompanhante;
-    private Administrador administrador;
 
     public Paciente() {
     }
@@ -160,13 +159,5 @@ public class Paciente {
 
     public void setAcompanhante(Acompanhante acompanhante) {
         this.acompanhante = acompanhante;
-    }
-
-    public Administrador getAdministrador() {
-        return administrador;
-    }
-
-    public void setAdministrador(Administrador administrador) {
-        this.administrador = administrador;
     }
 }

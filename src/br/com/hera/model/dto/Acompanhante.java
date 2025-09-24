@@ -13,6 +13,14 @@ public class Acompanhante {
     public Acompanhante() {
     }
 
+    public Acompanhante(String nome, Telefone telefone, String parentesco, String email, LocalDateTime dataCadastro) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.parentesco = parentesco;
+        this.email = email;
+        this.dataCadastro = dataCadastro;
+    }
+
     public int getId() {
         return id;
     }

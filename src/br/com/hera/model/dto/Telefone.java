@@ -11,6 +11,14 @@ public class Telefone {
     public Telefone() {
     }
 
+    public Telefone(String ddd, String numero, String tipo, boolean ativo, boolean preferencial) {
+        this.ddd = ddd;
+        this.numero = numero;
+        this.tipo = tipo;
+        this.ativo = ativo;
+        this.preferencial = preferencial;
+    }
+
     public int getId() {
         return id;
     }
