@@ -68,7 +68,7 @@ public class TelefoneDAO {
     }
 
     public String excluir(Telefone telefone) {
-        String sql = "DELETE FROM T_HERA_PACIENTES WHERE id = ?";
+        String sql = "DELETE FROM T_HERA_TELEFONES WHERE id = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);) {
             preparedStatement.setInt(1, telefone.getId());
             if (preparedStatement.executeUpdate() > 0) {

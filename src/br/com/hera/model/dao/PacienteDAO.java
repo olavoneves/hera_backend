@@ -56,7 +56,7 @@ public class PacienteDAO implements IDAO {
     @Override
     public String alterar(Object object) {
         paciente = (Paciente) object;
-        String sql = "UPDATE T_HERA_PACIENTES SET nome = ?, email = ?, sexo = ?, telefone_id = ?, status = ?, consultasRestantes = ?, faltas = ?, possuiDeficiencia = ?, tipoDeficiencia = ?, videoEnviado = ?, dataNascimento = ?, endereco = ?, preferenciaContato = ?, dataCadastro = ?, ultimaAtualizacao = ?, acompanhante_id = ? WHERE id = ?)";
+        String sql = "UPDATE T_HERA_PACIENTES SET nome = ?, email = ?, sexo = ?, telefone_id = ?, status = ?, consultasRestantes = ?, faltas = ?, possuiDeficiencia = ?, tipoDeficiencia = ?, videoEnviado = ?, dataNascimento = ?, endereco = ?, preferenciaContato = ?, dataCadastro = ?, ultimaAtualizacao = ?, acompanhante_id = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);) {
             preparedStatement.setString(1, paciente.getNome());
             preparedStatement.setString(2, paciente.getEmail());
@@ -74,7 +74,7 @@ public class PacienteDAO implements IDAO {
             preparedStatement.setTimestamp(14, java.sql.Timestamp.valueOf(paciente.getDataCadastro()));
             preparedStatement.setTimestamp(15, java.sql.Timestamp.valueOf(paciente.getUltimaAtualizacao()));
             preparedStatement.setInt(16, paciente.getAcompanhante().getId());
-            preparedStatement.setInt(18, paciente.getId());
+            preparedStatement.setInt(17, paciente.getId());
             if (preparedStatement.executeUpdate() > 0) {
                 return "Paciente alterado com sucesso";
             } else {
@@ -109,7 +109,49 @@ public class PacienteDAO implements IDAO {
             preparedStatement.setInt(1, paciente.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return String.format("\nId: %d \nNome: %s \nE-mail: %s \nSexo: %s \nTelefone: %s \nStatus: %b \nConsultas Restantes: %d \nFaltas: %d \nPossui Deficiência: %b \nTipo de Deficiencia: %s \nVideo Enviado: %b \nData de Nascimento: %s \nEndereço: %s \nPreferência de Contato: %s \nData de Cadastro: %s \nUltima Atualizacao: %d \nAcompanhante: %s \n\n", paciente.getId(), resultSet.getString("nome"), resultSet.getString("email"), resultSet.getString("sexo"), resultSet.getObject("telefone"), resultSet.getString("status"), resultSet.getInt("consultasRestantes"), resultSet.getInt("faltas"), resultSet.getString("possuiDeficiencia"), resultSet.getString("tipoDeficiencia"), resultSet.getString("videoEnviado"), resultSet.getDate("dataNascimento").toLocalDate(), resultSet.getString("endereco"), resultSet.getString("preferenciaContato"), resultSet.getTimestamp("dataCadastro").toLocalDateTime(), resultSet.getTimestamp("ultimaAtualizacao").toLocalDateTime(), resultSet.getObject("acompanhante"));
+                paciente.setId(resultSet.getInt("id"));
+                paciente.setNome(resultSet.getString("nome"));
+                paciente.setEmail(resultSet.getString("email"));
+                paciente.setSexo(resultSet.getString("sexo"));
+                paciente.setStatus(resultSet.getString("status"));
+                paciente.setConsultasRestantes(resultSet.getInt("consultasRestantes"));
+                paciente.setFaltas(resultSet.getInt("faltas"));
+                paciente.setPossuiDeficiencia("1".equals(resultSet.getString("possuiDeficiencia")));
+                paciente.setTipoDeficiencia(resultSet.getString("tipoDeficiencia"));
+                paciente.setVideoEnviado("1".equals(resultSet.getString("videoEnviado")));
+                paciente.setDataNascimento(resultSet.getDate("dataNascimento").toLocalDate());
+                paciente.setEndereco(resultSet.getString("endereco"));
+                paciente.setPreferenciaContato(resultSet.getString("preferenciaContato"));
+                paciente.setDataCadastro(resultSet.getTimestamp("dataCadastro").toLocalDateTime());
+                paciente.setUltimaAtualizacao(resultSet.getTimestamp("ultimaAtualizacao").toLocalDateTime());
+
+                TelefoneDAO telefoneDAO = new TelefoneDAO(getConnection());
+                paciente.setTelefone(telefoneDAO.listarUm(resultSet.getInt("telefone_id")));
+
+                AcompanhanteDAO acompanhanteDAO = new AcompanhanteDAO(getConnection());
+                paciente.setAcompanhante(acompanhanteDAO.listarUm(resultSet.getInt("acompanhante_id")));
+
+                return String.format(
+                        "Id: %d\nNome: %s\nEmail: %s\nSexo: %s\nTelefone: %s\nStatus: %s\nConsultas Restantes: %d\nFaltas: %d\nPossui Deficiência: %b\nTipo de Deficiencia: %s\nVideo Enviado: %b\nData Nascimento: %s\nEndereço: %s\nPreferência de Contato: %s\nData Cadastro: %s\nÚltima Atualização: %s\nAcompanhante: %s\nTelefone Acompanhante: %s\n",
+                        paciente.getId(),
+                        paciente.getNome(),
+                        paciente.getEmail(),
+                        paciente.getSexo(),
+                        paciente.getTelefone() != null ? paciente.getTelefone().getNumero() : "N/A",
+                        paciente.getStatus(),
+                        paciente.getConsultasRestantes(),
+                        paciente.getFaltas(),
+                        paciente.isPossuiDeficiencia(),
+                        paciente.getTipoDeficiencia(),
+                        paciente.isVideoEnviado(),
+                        paciente.getDataNascimento(),
+                        paciente.getEndereco(),
+                        paciente.getPreferenciaContato(),
+                        paciente.getDataCadastro(),
+                        paciente.getUltimaAtualizacao(),
+                        paciente.getAcompanhante() != null ? paciente.getAcompanhante().getNome() : "N/A",
+                        paciente.getAcompanhante() != null && paciente.getAcompanhante().getTelefone() != null ? paciente.getAcompanhante().getTelefone().getNumero() : "N/A"
+                );
             } else {
                 return "Erro ao listar paciente";
             }

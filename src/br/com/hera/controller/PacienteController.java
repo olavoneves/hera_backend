@@ -68,6 +68,20 @@ public class PacienteController {
         paciente.setAcompanhante(acompanhante);
 
         PacienteDAO pacienteDAO = new PacienteDAO(connection);
+        TelefoneDAO telefoneDAO = new TelefoneDAO(connection);
+        AcompanhanteDAO acompanhanteDAO = new AcompanhanteDAO(connection);
+
+        if (paciente.getTelefone() != null) {
+            telefoneDAO.alterar(paciente.getTelefone());
+        }
+
+        if (paciente.getAcompanhante() != null) {
+            if (paciente.getAcompanhante().getTelefone() != null) {
+                telefoneDAO.alterar(paciente.getAcompanhante().getTelefone());
+            }
+            acompanhanteDAO.alterar(paciente.getAcompanhante());
+        }
+
         resposta = pacienteDAO.alterar(paciente);
 
         ConnectionFactory.fecharConexao(connection);

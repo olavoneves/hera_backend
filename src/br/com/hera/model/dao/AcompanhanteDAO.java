@@ -43,7 +43,7 @@ public class AcompanhanteDAO{
     }
 
     public int alterar(Acompanhante acompanhante) {
-        String sql = "UPDATE T_HERA_PACIENTES SET nome = ?, telefone_id = ?, parentesco = ?, email = ?, datacadastro = ? WHERE id = ?";
+        String sql = "UPDATE T_HERA_ACOMPANHANTES SET nome = ?, telefone_id = ?, parentesco = ?, email = ?, datacadastro = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql, new String[]{"id"});) {
             preparedStatement.setString(1, acompanhante.getNome());
             preparedStatement.setInt(2, acompanhante.getTelefone().getId());
@@ -68,7 +68,7 @@ public class AcompanhanteDAO{
     }
 
     public String excluir(Acompanhante acompanhante) {
-        String sql = "DELETE FROM T_HERA_PACIENTES WHERE id = ?";
+        String sql = "DELETE FROM T_HERA_ACOMPANHANTES WHERE id = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);) {
             preparedStatement.setInt(1, acompanhante.getId());
             if (preparedStatement.executeUpdate() > 0) {
