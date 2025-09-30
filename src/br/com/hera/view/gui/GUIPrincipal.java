@@ -5,10 +5,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class GUIPrincipal extends JFrame {
-    private Container container;
+    private JPanel painelPrincipal; // Área principal para trocar as telas
     private JMenuBar menuBar;
     private JMenu menuPaciente, menuMedico, menuConsulta;
-    private JMenuItem itemCadastroPaciente, itemCadastroMedico, itemCadastroConsulta;
+    private JMenuItem itemPaciente, itemMedico, itemConsulta;
 
     public GUIPrincipal() {
         inicializarComponentes();
@@ -17,21 +17,24 @@ public class GUIPrincipal extends JFrame {
     }
 
     private void inicializarComponentes() {
-        container = getContentPane();
+        // Painel central que será trocado dinamicamente
+        painelPrincipal = new JPanel(new BorderLayout());
+        add(painelPrincipal, BorderLayout.CENTER);
 
+        // Barra de menus
         menuBar = new JMenuBar();
 
         menuPaciente = new JMenu("Pacientes");
         menuMedico = new JMenu("Médicos");
         menuConsulta = new JMenu("Consultas");
 
-        itemCadastroPaciente = new JMenuItem("Cadastro de Pacientes");
-        itemCadastroMedico = new JMenuItem("Cadastro de Médicos");
-        itemCadastroConsulta = new JMenuItem("Agendar Consulta");
+        itemPaciente = new JMenuItem("Paciente");
+        itemMedico = new JMenuItem("Médico");
+        itemConsulta = new JMenuItem("Consulta");
 
-        menuPaciente.add(itemCadastroPaciente);
-        menuMedico.add(itemCadastroMedico);
-        menuConsulta.add(itemCadastroConsulta);
+        menuPaciente.add(itemPaciente);
+        menuMedico.add(itemMedico);
+        menuConsulta.add(itemConsulta);
 
         menuBar.add(menuPaciente);
         menuBar.add(menuMedico);
@@ -42,27 +45,36 @@ public class GUIPrincipal extends JFrame {
 
     private void definirEventos() {
         // Paciente
-        itemCadastroPaciente.addActionListener((ActionEvent e) -> {
+        itemPaciente.addActionListener((ActionEvent e) -> {
             GUIPaciente guiPaciente = new GUIPaciente();
-            container.removeAll();
-            container.add(guiPaciente);
-            container.validate();
+            setPainelPrincipal(guiPaciente);
         });
 
         // Médico
-        itemCadastroMedico.addActionListener((ActionEvent e) -> {
-            JOptionPane.showMessageDialog(this, "GUI Médico ainda não implementada");
+        itemMedico.addActionListener((ActionEvent e) -> {
+            JPanel painelMedico = new JPanel();
+            painelMedico.add(new JLabel("GUI Médico ainda não implementada"));
+            setPainelPrincipal(painelMedico);
         });
 
         // Consulta
-        itemCadastroConsulta.addActionListener((ActionEvent e) -> {
-            JOptionPane.showMessageDialog(this, "GUI Consulta ainda não implementada");
+        itemConsulta.addActionListener((ActionEvent e) -> {
+            JPanel painelConsulta = new JPanel();
+            painelConsulta.add(new JLabel("GUI Consulta ainda não implementada"));
+            setPainelPrincipal(painelConsulta);
         });
+    }
+
+    private void setPainelPrincipal(JPanel painel) {
+        painelPrincipal.removeAll();
+        painelPrincipal.add(painel, BorderLayout.CENTER);
+        painelPrincipal.revalidate();
+        painelPrincipal.repaint();
     }
 
     private void configurarJanela() {
         setTitle("Sistema Hera");
-        setSize(900, 700);
+        setSize(1400, 1000);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);

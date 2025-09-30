@@ -1,7 +1,9 @@
 package br.com.hera.controller;
 
+import br.com.hera.model.dao.AcompanhanteDAO;
 import br.com.hera.model.dao.ConnectionFactory;
 import br.com.hera.model.dao.PacienteDAO;
+import br.com.hera.model.dao.TelefoneDAO;
 import br.com.hera.model.dto.Acompanhante;
 import br.com.hera.model.dto.Paciente;
 import br.com.hera.model.dto.Telefone;
@@ -80,6 +82,24 @@ public class PacienteController {
         paciente.setId(id);
 
         PacienteDAO pacienteDAO = new PacienteDAO(connection);
+        AcompanhanteDAO acompanhanteDAO = new AcompanhanteDAO(connection);
+        TelefoneDAO telefoneDAO = new TelefoneDAO(connection);
+
+        paciente = pacienteDAO.buscarPorId(id);
+
+        if (paciente != null) {
+            if (paciente.getAcompanhante() != null) {
+                acompanhanteDAO.excluir(paciente.getAcompanhante());
+                if (paciente.getAcompanhante().getTelefone() != null) {
+                    telefoneDAO.excluir(paciente.getAcompanhante().getTelefone());
+                }
+            }
+
+            if (paciente.getTelefone() != null) {
+                telefoneDAO.excluir(paciente.getTelefone());
+            }
+        }
+
         resposta = pacienteDAO.excluir(paciente);
 
         ConnectionFactory.fecharConexao(connection);
@@ -117,7 +137,7 @@ public class PacienteController {
                         + ", Nome: " + paciente.getNome()
                         + ", E-mail: " + paciente.getEmail()
                         + ", Sexo: " + paciente.getSexo()
-                        + ", Telefone: " + paciente.getTelefone()
+                        + ", Telefone: " + paciente.getTelefone().getId()
                         + ", Status: " + paciente.getStatus()
                         + ", Consultas Restantes: " + paciente.getConsultasRestantes()
                         + ", Faltas: " + paciente.getFaltas()
@@ -129,7 +149,7 @@ public class PacienteController {
                         + ", Preferência de Contato: " + paciente.getPreferenciaContato()
                         + ", Data de Cadastro: " + paciente.getDataCadastro()
                         + ", Ultima Atualização: " + paciente.getUltimaAtualizacao()
-                        + ", Acompanhante: " + paciente.getAcompanhante()
+                        + ", Acompanhante: " + paciente.getAcompanhante().getId()
                         + "\n";
             }
         }

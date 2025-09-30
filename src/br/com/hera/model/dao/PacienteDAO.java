@@ -25,7 +25,7 @@ public class PacienteDAO implements IDAO {
     @Override
     public String inserir(Object object) {
         paciente = (Paciente) object;
-        String sql = "INSERT INTO T_HERA_PACIENTES(nome, email, sexo, telefone_id, status, consultasRestantes, faltas, possuiDeficiencia, tipoDeficiencia, videoEnviado, dataNascimento, endereco, preferenciaContato, dataCadastro, ultimaAtualizacao, acompanhante_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO T_HERA_PACIENTES(nome, email, sexo, telefone_id, status, consultasRestantes, faltas, possuiDeficiencia, tipoDeficiencia, videoEnviado, dataNascimento, endereco, preferenciaContato, dataCadastro, ultimaAtualizacao, acompanhante_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);) {
             preparedStatement.setString(1, paciente.getNome());
             preparedStatement.setString(2, paciente.getEmail());
@@ -34,9 +34,9 @@ public class PacienteDAO implements IDAO {
             preparedStatement.setString(5, paciente.getStatus());
             preparedStatement.setInt(6, paciente.getConsultasRestantes());
             preparedStatement.setInt(7, paciente.getFaltas());
-            preparedStatement.setBoolean(8, paciente.isPossuiDeficiencia());
+            preparedStatement.setString(8, paciente.isPossuiDeficiencia() ? "1" : "0");
             preparedStatement.setString(9, paciente.getTipoDeficiencia());
-            preparedStatement.setBoolean(10, paciente.isVideoEnviado());
+            preparedStatement.setString(10, paciente.isVideoEnviado() ? "1" : "0");
             preparedStatement.setDate(11,  java.sql.Date.valueOf(paciente.getDataNascimento()));
             preparedStatement.setString(12, paciente.getEndereco());
             preparedStatement.setString(13, paciente.getPreferenciaContato());
@@ -65,9 +65,9 @@ public class PacienteDAO implements IDAO {
             preparedStatement.setString(5, paciente.getStatus());
             preparedStatement.setInt(6, paciente.getConsultasRestantes());
             preparedStatement.setInt(7, paciente.getFaltas());
-            preparedStatement.setBoolean(8, paciente.isPossuiDeficiencia());
+            preparedStatement.setString(8, paciente.isPossuiDeficiencia() ? "1" : "0");
             preparedStatement.setString(9, paciente.getTipoDeficiencia());
-            preparedStatement.setBoolean(10, paciente.isVideoEnviado());
+            preparedStatement.setString(10, paciente.isVideoEnviado() ? "1" : "0");
             preparedStatement.setDate(11, java.sql.Date.valueOf(paciente.getDataNascimento()));
             preparedStatement.setString(12, paciente.getEndereco());
             preparedStatement.setString(13, paciente.getPreferenciaContato());
@@ -88,7 +88,7 @@ public class PacienteDAO implements IDAO {
     @Override
     public String excluir(Object object) {
         paciente = (Paciente) object;
-        String sql = "DELETE FROM T_HERA_PACIENTES WHERE id = ?)";
+        String sql = "DELETE FROM T_HERA_PACIENTES WHERE id = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);) {
             preparedStatement.setInt(1, paciente.getId());
             if (preparedStatement.executeUpdate() > 0) {
@@ -104,10 +104,10 @@ public class PacienteDAO implements IDAO {
     @Override
     public String listarUm(Object object) {
         paciente = (Paciente) object;
-        String sql = "SELECT * FROM T_HERA_PACIENTES WHERE id = ?)";
+        String sql = "SELECT * FROM T_HERA_PACIENTES WHERE id = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);) {
-            ResultSet resultSet = preparedStatement.executeQuery();
             preparedStatement.setInt(1, paciente.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return String.format("\nId: %d \nNome: %s \nE-mail: %s \nSexo: %s \nTelefone: %s \nStatus: %b \nConsultas Restantes: %d \nFaltas: %d \nPossui Deficiência: %b \nTipo de Deficiencia: %s \nVideo Enviado: %b \nData de Nascimento: %s \nEndereço: %s \nPreferência de Contato: %s \nData de Cadastro: %s \nUltima Atualizacao: %d \nAcompanhante: %s \n\n", paciente.getId(), resultSet.getString("nome"), resultSet.getString("email"), resultSet.getString("sexo"), resultSet.getObject("telefone"), resultSet.getString("status"), resultSet.getInt("consultasRestantes"), resultSet.getInt("faltas"), resultSet.getString("possuiDeficiencia"), resultSet.getString("tipoDeficiencia"), resultSet.getString("videoEnviado"), resultSet.getDate("dataNascimento").toLocalDate(), resultSet.getString("endereco"), resultSet.getString("preferenciaContato"), resultSet.getTimestamp("dataCadastro").toLocalDateTime(), resultSet.getTimestamp("ultimaAtualizacao").toLocalDateTime(), resultSet.getObject("acompanhante"));
             } else {
@@ -160,5 +160,44 @@ public class PacienteDAO implements IDAO {
             return null;
         }
         return listaPacientes;
+    }
+
+    public Paciente buscarPorId(int id) {
+        String sql = "SELECT * FROM T_HERA_PACIENTES WHERE id = ?";
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Paciente paciente = new Paciente();
+                paciente.setId(resultSet.getInt("id"));
+                paciente.setNome(resultSet.getString("nome"));
+                paciente.setEmail(resultSet.getString("email"));
+                paciente.setSexo(resultSet.getString("sexo"));
+                paciente.setStatus(resultSet.getString("status"));
+                paciente.setConsultasRestantes(resultSet.getInt("consultasRestantes"));
+                paciente.setFaltas(resultSet.getInt("faltas"));
+                paciente.setPossuiDeficiencia("1".equals(resultSet.getString("possuiDeficiencia")));
+                paciente.setTipoDeficiencia(resultSet.getString("tipoDeficiencia"));
+                paciente.setVideoEnviado("1".equals(resultSet.getString("videoEnviado")));
+                paciente.setDataNascimento(resultSet.getDate("dataNascimento").toLocalDate());
+                paciente.setEndereco(resultSet.getString("endereco"));
+                paciente.setPreferenciaContato(resultSet.getString("preferenciaContato"));
+                paciente.setDataCadastro(resultSet.getTimestamp("dataCadastro").toLocalDateTime());
+                paciente.setUltimaAtualizacao(resultSet.getTimestamp("ultimaAtualizacao").toLocalDateTime());
+
+                TelefoneDAO telefoneDAO = new TelefoneDAO(getConnection());
+                paciente.setTelefone(telefoneDAO.listarUm(resultSet.getInt("telefone_id")));
+
+                AcompanhanteDAO acompanhanteDAO = new AcompanhanteDAO(getConnection());
+                paciente.setAcompanhante(acompanhanteDAO.listarUm(resultSet.getInt("acompanhante_id")));
+
+                return paciente;
+            } else {
+                return null;
+            }
+        } catch (SQLException exception) {
+            System.out.println("Erro de SQL! \n" + exception.getMessage());
+            return null;
+        }
     }
 }
