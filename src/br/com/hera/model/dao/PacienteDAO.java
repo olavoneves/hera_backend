@@ -164,6 +164,7 @@ public class PacienteDAO implements IDAO {
     public ArrayList<Object> listarTodos() {
         String sql = "SELECT * FROM T_HERA_PACIENTES ORDER BY id";
         ArrayList<Object> listaPacientes = new ArrayList<>();
+        TelefoneDAO telefoneDAO = new TelefoneDAO(getConnection());
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery();) {
@@ -191,6 +192,8 @@ public class PacienteDAO implements IDAO {
                     paciente.setUltimaAtualizacao(resultSet.getTimestamp("ultimaAtualizacao").toLocalDateTime());
                     Acompanhante acompanhante = new Acompanhante();
                     acompanhante.setId(resultSet.getInt("acompanhante_id"));
+                    Telefone telAcomp = telefoneDAO.buscarPorAcompanhante(resultSet.getInt("acompanhante_id"));
+                    acompanhante.setTelefone(telAcomp);
                     paciente.setAcompanhante(acompanhante);
                     listaPacientes.add(paciente);
                 }

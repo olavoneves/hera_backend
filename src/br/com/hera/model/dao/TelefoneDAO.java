@@ -103,4 +103,28 @@ public class TelefoneDAO {
             return null;
         }
     }
+
+    public Telefone buscarPorAcompanhante(int acompanhanteId) {
+        String sql = "SELECT telefone.id, telefone.ddd, telefone.numero, telefone.tipo, telefone.ativo, telefone.preferencial FROM T_HERA_TELEFONES telefone JOIN T_HERA_ACOMPANHANTES acompanhante ON telefone.id = acompanhante.telefone_id WHERE acompanhante.id = ?";
+        Telefone telefone = null;
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);) {
+            preparedStatement.setInt(1, acompanhanteId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                telefone = new Telefone();
+                telefone.setId(resultSet.getInt("id"));
+                telefone.setDdd(resultSet.getString("ddd"));
+                telefone.setNumero(resultSet.getString("numero"));
+                telefone.setTipo(resultSet.getString("tipo"));
+                telefone.setAtivo("1".equals(resultSet.getString("ativo")));
+                telefone.setPreferencial("1".equals(resultSet.getString("preferencial")));
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar telefone do acompanhante: " + e.getMessage());
+            return null;
+        }
+        return telefone;
+    }
 }
