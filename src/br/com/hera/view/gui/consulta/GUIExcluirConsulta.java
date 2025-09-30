@@ -1,4 +1,6 @@
 package br.com.hera.view.gui.consulta;
 
-public class GUIExcluirConsulta {
+import javax.swing.*;
+
+public class GUIExcluirConsulta extends JPanel {
 }

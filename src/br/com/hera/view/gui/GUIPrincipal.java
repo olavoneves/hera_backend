@@ -1,5 +1,12 @@
 package br.com.hera.view.gui;
 
+import br.com.hera.view.gui.consulta.GUIExcluirConsulta;
+import br.com.hera.view.gui.consulta.GUIInserirConsulta;
+import br.com.hera.view.gui.consulta.GUIListarUmaConsulta;
+import br.com.hera.view.gui.medico.GUIAtualizarMedico;
+import br.com.hera.view.gui.medico.GUIExcluirMedico;
+import br.com.hera.view.gui.medico.GUIInserirMedico;
+import br.com.hera.view.gui.medico.GUIListarUmMedico;
 import br.com.hera.view.gui.paciente.GUIAtualizarPaciente;
 import br.com.hera.view.gui.paciente.GUIExcluirPaciente;
 import br.com.hera.view.gui.paciente.GUIInserirPaciente;
@@ -10,7 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class GUIPrincipal extends JFrame {
-    private JPanel painelPrincipal; // Área principal para trocar as telas
+    private JPanel painelPrincipal;
     private JMenuBar menuBar;
     private JMenu menuPaciente, menuMedico, menuConsulta, menuSair;
     private JMenuItem itemCadastrarPaciente, itemAtualizarPaciente, itemExcluirPaciente, itemListarPaciente, itemCadastrarMedico, itemAtualizarMedico, itemExcluirMedico, itemListarMedico, itemAgendarConsulta, itemExcluirConsulta, itemListarConsulta, itemSair;
@@ -92,46 +99,39 @@ public class GUIPrincipal extends JFrame {
 
         // Médico
         itemCadastrarMedico.addActionListener((ActionEvent e) -> {
-            JPanel painelMedico = new JPanel();
-            painelMedico.add(new JLabel("GUI Médico ainda não implementada"));
-            setPainelPrincipal(painelMedico);
+            GUIInserirMedico guiInserirMedico = new GUIInserirMedico();
+            setPainelPrincipal(guiInserirMedico);
         });
 
         itemAtualizarMedico.addActionListener((ActionEvent e) -> {
-            JPanel painelMedico = new JPanel();
-            painelMedico.add(new JLabel("GUI Médico ainda não implementada"));
-            setPainelPrincipal(painelMedico);
+            GUIAtualizarMedico guiAtualizarMedico = new GUIAtualizarMedico();
+            setPainelPrincipal(guiAtualizarMedico);
         });
 
         itemExcluirMedico.addActionListener((ActionEvent e) -> {
-            JPanel painelMedico = new JPanel();
-            painelMedico.add(new JLabel("GUI Médico ainda não implementada"));
-            setPainelPrincipal(painelMedico);
+            GUIExcluirMedico guiExcluirMedico = new GUIExcluirMedico();
+            setPainelPrincipal(guiExcluirMedico);
         });
 
         itemListarMedico.addActionListener((ActionEvent e) -> {
-            JPanel painelMedico = new JPanel();
-            painelMedico.add(new JLabel("GUI Médico ainda não implementada"));
-            setPainelPrincipal(painelMedico);
+            GUIListarUmMedico guiListarUmMedico = new GUIListarUmMedico();
+            setPainelPrincipal(guiListarUmMedico);
         });
 
         // Consulta
         itemAgendarConsulta.addActionListener((ActionEvent e) -> {
-            JPanel painelConsulta = new JPanel();
-            painelConsulta.add(new JLabel("GUI Consulta ainda não implementada"));
-            setPainelPrincipal(painelConsulta);
+            GUIInserirConsulta guiInserirConsulta = new GUIInserirConsulta();
+            setPainelPrincipal(guiInserirConsulta);
         });
 
         itemExcluirConsulta.addActionListener((ActionEvent e) -> {
-            JPanel painelConsulta = new JPanel();
-            painelConsulta.add(new JLabel("GUI Consulta ainda não implementada"));
-            setPainelPrincipal(painelConsulta);
+            GUIExcluirConsulta guiExcluirConsulta = new GUIExcluirConsulta();
+            setPainelPrincipal(guiExcluirConsulta);
         });
 
         itemListarConsulta.addActionListener((ActionEvent e) -> {
-            JPanel painelConsulta = new JPanel();
-            painelConsulta.add(new JLabel("GUI Consulta ainda não implementada"));
-            setPainelPrincipal(painelConsulta);
+            GUIListarUmaConsulta guiListarUmaConsulta = new GUIListarUmaConsulta();
+            setPainelPrincipal(guiListarUmaConsulta);
         });
 
         // Sair

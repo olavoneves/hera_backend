@@ -16,7 +16,7 @@ public class GUIAtualizarPaciente extends JPanel {
     private JLabel lbIdPaciente, lbIdTelefone, lbIdAcompanhante, lbIdTelefoneAcomp;
     private JTextField tfIdPaciente, tfIdTelefone, tfIdAcompanhante, tfIdTelefoneAcomp;
     private JLabel lbNome, lbEmail, lbSexo, lbDDD, lbNumero, lbTipo, lbStatus, lbConsultasRestantes, lbFaltas,
-            lbPossuiDeficiencia, lbTipoDeficiencia, lbVideoEnviado, lbDataNascimento, lbEndereco, lbPreferenciaContato,
+            lbTipoDeficiencia, lbDataNascimento, lbEndereco, lbPreferenciaContato,
             lbDataCadastro, lbUltimaAtualizacao, lbAcompanhante, lbParentesco, lbDDD_Acomp, lbNumero_Acomp, lbTipo_Acomp;
     private JTextField tfNome, tfEmail, tfSexo, tfDDD, tfNumero, tfTipo, tfStatus, tfConsultasRestantes, tfFaltas,
             tfTipoDeficiencia, tfDataNascimento, tfEndereco, tfPreferenciaContato, tfDataCadastro, tfUltimaAtualizacao,
@@ -94,7 +94,6 @@ public class GUIAtualizarPaciente extends JPanel {
         cbAtivo_Acomp = new JCheckBox("Tel. Acomp. Está Ativo");
         cbPreferencial_Acomp = new JCheckBox("Tel. Acomp. é Preferencial.");
 
-        // Adicionando componentes ao painel
         panelTop.add(lbIdPaciente); panelTop.add(tfIdPaciente);
         panelTop.add(lbIdTelefone); panelTop.add(tfIdTelefone);
         panelTop.add(lbIdAcompanhante); panelTop.add(tfIdAcompanhante);

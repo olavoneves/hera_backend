@@ -213,7 +213,7 @@ public class PacienteDAO implements IDAO {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Paciente paciente = new Paciente();
+                paciente = new Paciente();
                 paciente.setId(resultSet.getInt("id"));
                 paciente.setNome(resultSet.getString("nome"));
                 paciente.setEmail(resultSet.getString("email"));
