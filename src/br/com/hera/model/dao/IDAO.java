@@ -8,4 +8,5 @@ public interface IDAO {
     public String excluir(Object object);
     public String listarUm(Object object);
     public ArrayList<Object> listarTodos();
+    public Object buscarPorId(int id);
 }

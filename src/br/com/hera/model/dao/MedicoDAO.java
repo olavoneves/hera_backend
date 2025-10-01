@@ -156,6 +156,7 @@ public class MedicoDAO implements IDAO {
         return listaMedicos;
     }
 
+    @Override
     public Medico buscarPorId(int id) {
         String sql = "SELECT * FROM T_HERA_MEDICOS WHERE id = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);) {

@@ -1,5 +1,6 @@
 package br.com.hera.view.gui;
 
+import br.com.hera.view.gui.consulta.GUIAtualizarConsulta;
 import br.com.hera.view.gui.consulta.GUIExcluirConsulta;
 import br.com.hera.view.gui.consulta.GUIInserirConsulta;
 import br.com.hera.view.gui.consulta.GUIListarUmaConsulta;
@@ -20,7 +21,7 @@ public class GUIPrincipal extends JFrame {
     private JPanel painelPrincipal;
     private JMenuBar menuBar;
     private JMenu menuPaciente, menuMedico, menuConsulta, menuSair;
-    private JMenuItem itemCadastrarPaciente, itemAtualizarPaciente, itemExcluirPaciente, itemListarPaciente, itemCadastrarMedico, itemAtualizarMedico, itemExcluirMedico, itemListarMedico, itemAgendarConsulta, itemExcluirConsulta, itemListarConsulta, itemSair;
+    private JMenuItem itemCadastrarPaciente, itemAtualizarPaciente, itemExcluirPaciente, itemListarPaciente, itemCadastrarMedico, itemAtualizarMedico, itemExcluirMedico, itemListarMedico, itemAgendarConsulta, itemAtualizarConsulta, itemExcluirConsulta, itemListarConsulta, itemSair;
 
     public GUIPrincipal() {
         inicializarComponentes();
@@ -50,6 +51,7 @@ public class GUIPrincipal extends JFrame {
         itemExcluirMedico = new JMenuItem("Excluir Médico");
         itemListarMedico = new JMenuItem("Listar Médico");
         itemAgendarConsulta = new JMenuItem("Agendar Consulta");
+        itemAtualizarConsulta = new JMenuItem("Atualizar Consulta");
         itemExcluirConsulta = new JMenuItem("Excluir Consulta");
         itemListarConsulta = new JMenuItem("Listar Consulta");
         itemSair = new JMenuItem("Sair");
@@ -63,6 +65,7 @@ public class GUIPrincipal extends JFrame {
         menuMedico.add(itemExcluirMedico);
         menuMedico.add(itemListarMedico);
         menuConsulta.add(itemAgendarConsulta);
+        menuConsulta.add(itemAtualizarConsulta);
         menuConsulta.add(itemExcluirConsulta);
         menuConsulta.add(itemListarConsulta);
         menuSair.add(itemSair);
@@ -122,6 +125,11 @@ public class GUIPrincipal extends JFrame {
         itemAgendarConsulta.addActionListener((ActionEvent e) -> {
             GUIInserirConsulta guiInserirConsulta = new GUIInserirConsulta();
             setPainelPrincipal(guiInserirConsulta);
+        });
+
+        itemAtualizarConsulta.addActionListener((ActionEvent e) -> {
+            GUIAtualizarConsulta guiAtualizarConsulta = new GUIAtualizarConsulta();
+            setPainelPrincipal(guiAtualizarConsulta);
         });
 
         itemExcluirConsulta.addActionListener((ActionEvent e) -> {

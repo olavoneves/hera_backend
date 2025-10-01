@@ -176,9 +176,11 @@ public class PacienteDAO implements IDAO {
                     paciente.setNome(resultSet.getString("nome"));
                     paciente.setEmail(resultSet.getString("email"));
                     paciente.setSexo(resultSet.getString("sexo"));
+
                     Telefone tel = new Telefone();
                     tel.setId(resultSet.getInt("telefone_id"));
                     paciente.setTelefone(tel);
+
                     paciente.setStatus(resultSet.getString("status"));
                     paciente.setConsultasRestantes(resultSet.getInt("consultasRestantes"));
                     paciente.setFaltas(resultSet.getInt("faltas"));
@@ -190,11 +192,13 @@ public class PacienteDAO implements IDAO {
                     paciente.setPreferenciaContato(resultSet.getString("preferenciaContato"));
                     paciente.setDataCadastro(resultSet.getTimestamp("dataCadastro").toLocalDateTime());
                     paciente.setUltimaAtualizacao(resultSet.getTimestamp("ultimaAtualizacao").toLocalDateTime());
+
                     Acompanhante acompanhante = new Acompanhante();
                     acompanhante.setId(resultSet.getInt("acompanhante_id"));
                     Telefone telAcomp = telefoneDAO.buscarPorAcompanhante(resultSet.getInt("acompanhante_id"));
                     acompanhante.setTelefone(telAcomp);
                     paciente.setAcompanhante(acompanhante);
+
                     listaPacientes.add(paciente);
                 }
             } else {
@@ -207,6 +211,7 @@ public class PacienteDAO implements IDAO {
         return listaPacientes;
     }
 
+    @Override
     public Paciente buscarPorId(int id) {
         String sql = "SELECT * FROM T_HERA_PACIENTES WHERE id = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql);) {
